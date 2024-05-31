@@ -1,5 +1,5 @@
 from bokeh.io import curdoc,show
-from bokeh.models import ColumnDataSource, Select, TabPanel, Tabs
+from bokeh.models import ColumnDataSource, Select, TabPanel, Tabs, HoverTool
 from bokeh.plotting import figure
 from bokeh.layouts import column, row
 import pandas as pd
@@ -37,6 +37,22 @@ bar_plot = figure(x_range=filiere_data['Filière'], title="Sum of Valeur by Fili
 bar_plot.vbar(x='Filière', top='Valeur', width=0.5, source=filiere_source, color="firebrick")
 bar_plot.xaxis.major_label_orientation = 1.0  
 
+#add Hover functionnality
+tooltips1 = [
+    ("Filière", "@Filière"),
+    ("Valeur", "@Valeur")
+]
+tooltips2 = [
+    ("Occurrence", "@Occurrence"),
+    ("Valeur", "@Valeur")
+]
+
+tool1=HoverTool(tooltips=tooltips1)
+tool2=HoverTool(tooltips=tooltips2)
+
+bar_plot.add_tools(tool1)
+sum_median_plot.add_tools(tool2)
+
 #update plots
 def update_plots(attr, old, new):
     start_year = start_year_select.value
@@ -68,6 +84,18 @@ filliere_sum_valeur_line = filliere_sum_valeur_plot.line('Occurrence', 'Valeur',
 filliere_bar_plot = figure(title="Count of Valeur of Selected Filière by Year", x_axis_label='Year', y_axis_label='Sum Valeur')
 filliere_bar_source = ColumnDataSource(data=dict(Occurrence=[], Valeur=[]))
 filliere_bar_plot.vbar(x='Occurrence', top='Valeur', source=filliere_bar_source, color="green")
+
+#add Hover functionnality
+tooltips = [
+    ("Occurrence", "@Occurrence"),
+    ("Valeur", "@Valeur")
+]
+
+tool=HoverTool(tooltips=tooltips)
+
+filliere_bar_plot.add_tools(tool)
+filliere_sum_valeur_plot.add_tools(tool)
+
 
 #update plots
 def update_dashboard2(attr, old, new):
@@ -104,6 +132,17 @@ produit_sum_valeur_line = produit_sum_valeur_plot.line('Occurrence', 'Valeur', s
 produit_bar_plot = figure(title="Count of Valeur of Selected Produit by Year", x_axis_label='Year', y_axis_label='Sum Valeur')
 produit_bar_source = ColumnDataSource(data=dict(Occurrence=[], Valeur=[]))
 produit_bar_plot.vbar(x='Occurrence', top='Valeur', source=produit_bar_source, color="orange")
+
+#add Hover functionnality
+tooltips = [
+    ("Occurrence", "@Occurrence"),
+    ("Valeur", "@Valeur")
+]
+
+tool=HoverTool(tooltips=tooltips)
+
+produit_bar_plot.add_tools(tool)
+produit_sum_valeur_plot.add_tools(tool)
 
 #update plots
 def update_dashboard3(attr, old, new):
